@@ -1,3 +1,5 @@
+// import mongoose constructor
+const mongoose = require('mongoose');
 const express = require('express');
 
 const app = express();
@@ -9,4 +11,8 @@ app.use(express.static('public'));
 
 app.use(require('./routes'));
 
+// mongoose connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pizza-hunt-3');
+// use this to  log mongo queries being executed
+mongoose.set('debug',true);
 app.listen(PORT, () => console.log(`🌍 Connected on localhost:${PORT}`));
