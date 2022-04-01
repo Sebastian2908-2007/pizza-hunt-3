@@ -71,17 +71,130 @@ module.exports = (
 
   let hour;
   // check for 24-hr time
+  // below simply does not work due to getHours not having () I added a switch statement to actually change the hours to the correct one based on the military time hour.
+  // when I add the () to getHours it will start returning a single digit time but not the correct one for me ?
   if (dateObj.getHours > 12) {
     hour = Math.floor(dateObj.getHours() / 2);
   } else {
     hour = dateObj.getHours();
   }
   // if hour is 0 (12:00am), change it to 12
-  if (hour === 0) {
+  /*if (hour === 0) {
     hour = 12;
+  }*/
+
+  switch(hour) {
+    case  0:
+      hour = 12;
+      break;
+    case  01:
+      hour = 1;
+      break;
+    case  02:
+      hour = 2;
+      break;
+    case  03:
+      hour = 3;
+      break;
+    case  04:
+      hour = 4;
+      break;
+    case  05:
+      hour = 5;
+      break;
+    case  06:
+      hour = 6;
+      break;
+    case  07:
+      hour = 7;
+      break;
+    case  0:
+      hour = 12;
+      break;
+    case  08:
+      hour = 8;
+      break;
+    case  09:
+      hour = 9;
+      break;
+    case  10:
+      hour = 10;
+      break;
+    case 11:
+      hour = 11;
+      break;
+    case  12:
+      hour = 12;
+      break;
+    case  13:
+      hour = 1;
+      break;
+    case  14:
+      hour = 2;
+      break;
+    case  15:
+      hour = 3;
+      break;
+    case  16:
+      hour = 4;
+      break;
+    case  17:
+      hour = 5;
+      break;
+    case  18:
+      hour = 6;
+      break;
+    case  19:
+      hour = 7;
+      break;
+    case  20:
+      hour = 8;
+      break;
+    case  21:
+      hour = 9;
+      break;
+    case  22:
+      hour = 10;
+      break;
+    case  23:
+      hour = 11;
+      break;
+    case  24:
+      hour = 12;
+      break;
   }
 
-  const minutes = dateObj.getMinutes();
+  let minutes = dateObj.getMinutes();
+
+  switch(minutes) {
+    case 1:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 2:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 3:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 4:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 5:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 6:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 7:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 8:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+    case 9:
+      minutes = '0' + dateObj.getMinutes();
+      break;
+  }
 
   // set `am` or `pm`
   let periodOfDay;

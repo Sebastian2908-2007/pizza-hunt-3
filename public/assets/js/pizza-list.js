@@ -1,5 +1,21 @@
 const $pizzaList = document.querySelector('#pizza-list');
 
+// make call to my pizza api
+const getPizzaList = () => {
+  // call our pizza api
+    fetch('/api/pizzas')
+    // turn the response to json data
+    .then(response => response.json())
+    .then(pizzaListArr => {
+      // run print pizza funtion on every object returned in our data array
+      pizzaListArr.forEach(printPizza);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+// this will use the data from our api to make pizza cards "note how we destructure the incoming object for its individual properties"
 const printPizza = ({ _id, pizzaName, toppings, size, commentCount, createdBy, createdAt }) => {
   const pizzaCard = `
     <div class="col-12 col-lg-6 flex-row">
@@ -26,3 +42,5 @@ const printPizza = ({ _id, pizzaName, toppings, size, commentCount, createdBy, c
 
   $pizzaList.innerHTML += pizzaCard;
 };
+
+getPizzaList();
