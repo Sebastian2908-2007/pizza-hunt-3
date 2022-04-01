@@ -1,6 +1,7 @@
 const {Schema,model} = require('mongoose');
 
-const PizzaSchema = new Schema({
+const PizzaSchema = new Schema(
+    {
     pizzaName: {
         type: String 
     },
@@ -16,8 +17,26 @@ const PizzaSchema = new Schema({
         default: 'Large'
     },
     // []  indicates Array as the type for the toppings field it could be written toppings: { type: Array }
-    toppings: []
-});
+    toppings: [],
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
+},
+{
+    toJSON: {
+        virtuals: true,
+    },
+    id: false
+}
+);
+
+// get total count of comments and replies on retrieval
+PizzaSchema.virtual('commentCount').get(function() {
+    return this.comments.length;
+})
 
 // create the pizza model using the PizzaSchema
 const Pizza = model('Pizza',PizzaSchema);
