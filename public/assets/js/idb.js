@@ -41,7 +41,7 @@ request.onerror = function(event) {
  function uploadPizza() {
      console.log(db);
      // open a transaction on your db
-     const transaction = db.transaction(['new_pizza'], 'readwrite');
+       const transaction = db.transaction(['new_pizza'], 'readwrite');  
 
      // access your object store
      const pizzaObjectStore = transaction.objectStore('new_pizza');
