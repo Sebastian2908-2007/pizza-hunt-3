@@ -24,6 +24,37 @@ const commentController = {
       .catch(err => res.json(err));
     },
 
+    // add a areply to my pizza comment
+    addReply({params,body}, res) {
+        Comment.findOneAndUpdate(
+            {_id: params.commentId},
+            { $push: {replies: body} },
+            { new: true }
+        )
+        .then(dbPizzaData => {
+            if (!dbPizzaData) {
+                res.status(404).json({message: 'No Pizza found with that id' });
+                return;
+            }
+            res.json(dbPizzaData);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    },
+
+    // remove a reply 
+    removeReply({params},res)  {
+       Comment.findOneAndUpdate(
+           {_id: params.commentId},
+           { $pull: {replies: { replyId: params.replyId } } },
+           { new: true }
+       )
+       .then(dbCommentData => res.json(dbCommentData))
+       .catch(err => res.json(err));
+    },
+
     // remove comment
     removeComment({ params }, res) {
      Comment.findOneAndDelete({_id: params.commentId })

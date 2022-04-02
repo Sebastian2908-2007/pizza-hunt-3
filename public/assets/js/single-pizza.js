@@ -1,3 +1,5 @@
+
+
 const $backBtn = document.querySelector('#back-btn');
 const $pizzaName = document.querySelector('#pizza-name');
 const $createdBy = document.querySelector('#created-by');
@@ -8,6 +10,36 @@ const $commentSection = document.querySelector('#comment-section');
 const $newCommentForm = document.querySelector('#new-comment-form');
 
 let pizzaId;
+function getPizza() {
+  // get id of the pizza
+  // new URLSearchParams allows us access to methods that can help us work with wuery strings
+  // document.location.search will return a query strin so stuf after a ?
+  // .substring() method returns the part of the string between the start and end indexes, or to the end of the string.
+  // in our case .substring(1) says return everything after the first index
+  const searchParams = new URLSearchParams(document.location.search.substring(1));
+  // The get() method of the URLSearchParams interface returns the first value associated to the given search parameter
+  // in our case our query includes ?id=45530450 so searchParams.get('id') will return the id value in the url
+   pizzaId = searchParams.get('id');
+
+  // call our pizza api and get info about a particular pizza
+  fetch(`/api/pizzas/${pizzaId}`)
+  .then(response => {
+
+    if(!response) {
+      throw new Error({message: 'Somthing went horribly wrong :('})
+    }
+    return response.json();
+  })
+  .then(printPizza)
+  .catch(err => {
+    console.log(err);
+    alert('cannot find pizza with this id! taking you back.');
+    window.history.back();
+  })
+
+  
+  
+};
 
 function printPizza(pizzaData) {
   console.log(pizzaData);
@@ -81,12 +113,35 @@ function handleNewCommentSubmit(event) {
 
   const commentBody = $newCommentForm.querySelector('#comment').value;
   const writtenBy = $newCommentForm.querySelector('#written-by').value;
+  const searchParams = new URLSearchParams(document.location.search.substring(1));
+  pizzaId = searchParams.get('id');
 
   if (!commentBody || !writtenBy) {
     return false;
   }
 
   const formData = { commentBody, writtenBy };
+  fetch(`/api/comments/${pizzaId}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if(!response.ok) {
+      throw new Error('Somthing isnt quite right');
+    }
+    response.json();
+  })
+  .then(commentResponse => {
+    console.log(commentResponse);
+    location.reload();
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 function handleNewReplySubmit(event) {
@@ -97,6 +152,8 @@ function handleNewReplySubmit(event) {
   }
 
   const commentId = event.target.getAttribute('data-commentid');
+  const searchParams = new URLSearchParams(document.location.search.substring(1));
+  pizzaId = searchParams.get('id');
 
   const writtenBy = event.target.querySelector('[name=reply-name]').value;
   const replyBody = event.target.querySelector('[name=reply]').value;
@@ -106,6 +163,25 @@ function handleNewReplySubmit(event) {
   }
 
   const formData = { writtenBy, replyBody };
+  fetch(`/api/comments/${pizzaId}/${commentId}`, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if(!response.ok) {
+      throw new Error({message: 'Something is not right... :('})
+    }else{
+      location.reload();
+    }
+    
+  })
+  .catch(err => {
+    console.log(err);
+  })
 }
 
 $backBtn.addEventListener('click', function() {
@@ -114,3 +190,5 @@ $backBtn.addEventListener('click', function() {
 
 $newCommentForm.addEventListener('submit', handleNewCommentSubmit);
 $commentSection.addEventListener('submit', handleNewReplySubmit);
+
+getPizza();
