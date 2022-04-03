@@ -29,7 +29,7 @@ const commentController = {
         Comment.findOneAndUpdate(
             {_id: params.commentId},
             { $push: {replies: body} },
-            { new: true }
+            { new: true , runValidators: true}
         )
         .then(dbPizzaData => {
             if (!dbPizzaData) {
@@ -40,6 +40,7 @@ const commentController = {
         })
         .catch(err => {
             console.log(err);
+            res.json(err);
         })
 
     },
