@@ -1,15 +1,23 @@
 {
-  "name": "18-nosql",
+  "name": "pizza-hunt-3",
   "version": "1.0.0",
-  "private": true,
   "description": "",
   "main": "server.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sebastian2908-2007/pizza-hunt-3.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sebastian2908-2007/pizza-hunt-3/issues"
+  },
+  "homepage": "https://github.com/Sebastian2908-2007/pizza-hunt-3#readme",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^6.2.9"
